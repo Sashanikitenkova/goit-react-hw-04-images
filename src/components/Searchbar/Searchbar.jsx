@@ -1,32 +1,30 @@
-import React, {Component} from "react";
+import { useState } from "react";
 import {toast} from 'react-toastify';
 import { MdSearch } from "react-icons/md";
 import s from "./Searchbar.module.css";
 
-export class Searchbar extends Component {
-    state = {
-        imageName: '',
+export function Searchbar({ onSubmit }) {
+
+    const [imageName, stateImageName] = useState('');
+
+    const handleNameChange = event => {
+        stateImageName(event.currentTarget.value.toLowerCase());
     }
 
-    handleNameChange = event => {
-        this.setState({imageName: event.currentTarget.value.toLowerCase()});
-    }
-
-    handleSubmit = event => {
+    const handleSubmit = event => {
         event.preventDefault();
 
-        if (this.state.imageName.trim() === '') {
+        if (imageName.trim() === '') {
             return toast("Search image name missing");
         }
 
-        this.props.onSubmit(this.state.imageName);
-        this.setState({imageName:''});
+        onSubmit(imageName);
+        stateImageName('');
     }
   
-    render () {
       return (
         <header className={s.Searchbar}>
-            <form onSubmit={this.handleSubmit} className={s.SearchForm}>
+            <form onSubmit={handleSubmit} className={s.SearchForm}>
                 <button type="submit" className={s.SearchFormButton}>
                     <MdSearch className={s.SearchFormButtonLabel} />
                 </button>
@@ -34,15 +32,64 @@ export class Searchbar extends Component {
                 <input
                     type="text"
                     name="imageName"
-                    value={this.state.imageName}
+                    value={imageName}
                     className={s.SearchFormInput}
                     autoComplete="off"
                     autoFocus
                     placeholder="Search images and photos"
-                    onChange={this.handleNameChange}
+                    onChange={handleNameChange}
                 />
             </form>
         </header>
       );
-    }
   };
+
+
+// import React, {Component} from "react";
+// import {toast} from 'react-toastify';
+// import { MdSearch } from "react-icons/md";
+// import s from "./Searchbar.module.css";
+
+// export class Searchbar extends Component {
+//     state = {
+//         imageName: '',
+//     }
+
+//     handleNameChange = event => {
+//         this.setState({imageName: event.currentTarget.value.toLowerCase()});
+//     }
+
+//     handleSubmit = event => {
+//         event.preventDefault();
+
+//         if (this.state.imageName.trim() === '') {
+//             return toast("Search image name missing");
+//         }
+
+//         this.props.onSubmit(this.state.imageName);
+//         this.setState({imageName:''});
+//     }
+  
+//     render () {
+//       return (
+//         <header className={s.Searchbar}>
+//             <form onSubmit={this.handleSubmit} className={s.SearchForm}>
+//                 <button type="submit" className={s.SearchFormButton}>
+//                     <MdSearch className={s.SearchFormButtonLabel} />
+//                 </button>
+            
+//                 <input
+//                     type="text"
+//                     name="imageName"
+//                     value={this.state.imageName}
+//                     className={s.SearchFormInput}
+//                     autoComplete="off"
+//                     autoFocus
+//                     placeholder="Search images and photos"
+//                     onChange={this.handleNameChange}
+//                 />
+//             </form>
+//         </header>
+//       );
+//     }
+//   };
